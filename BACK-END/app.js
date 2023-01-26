@@ -17,6 +17,21 @@ app.use((req, res, next) => {
     next();
   });
 
+  app.post('/api/sauce', (req, res, next) => {
+    delete req.body._id;
+    const sauce = new sauce({
+      ...req.body
+    });
+    sauce.save()
+      .then(() => res.status(201).json({ message: 'Sauce enregistré !'}))
+      .catch(error => res.status(400).json({ error }));
+      next();
+  });
 
+  app.use('/api/sauce', (req, res, next) => {
+    sauce.find()
+      .then(sauce => res.status(200).json(sauce))
+      .catch(error => res.status(400).json({ error }));
+  });
 
 module.exports = app; 
