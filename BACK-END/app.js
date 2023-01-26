@@ -1,6 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const path = require("path");
+require('dotenv').config()
+
+const userRoutes = require('./routes/user')
+const sauceRoutes = require('./routes/sauce');
 
 mongoose.connect('mongodb+srv://octest:Drpepper1991@piquante.oakncol.mongodb.net/HotTakes?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -17,21 +23,7 @@ app.use((req, res, next) => {
     next();
   });
 
-  app.post('/api/sauce', (req, res, next) => {
-    delete req.body._id;
-    const sauce = new sauce({
-      ...req.body
-    });
-    sauce.save()
-      .then(() => res.status(201).json({ message: 'Sauce enregistré !'}))
-      .catch(error => res.status(400).json({ error }));
-      next();
-  });
 
-  app.use('/api/sauce', (req, res, next) => {
-    sauce.find()
-      .then(sauce => res.status(200).json(sauce))
-      .catch(error => res.status(400).json({ error }));
-  });
+
 
 module.exports = app; 
